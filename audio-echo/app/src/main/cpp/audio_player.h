@@ -17,7 +17,6 @@
 #ifndef NATIVE_AUDIO_AUDIO_PLAYER_H
 #define NATIVE_AUDIO_AUDIO_PLAYER_H
 #include <sys/types.h>
-#include <SLES/OpenSLES_Android.h>
 #include "audio_common.h"
 #include "buf_manager.h"
 #include "debug_utils.h"
@@ -36,10 +35,11 @@ class AudioPlayer {
 
     ENGINE_CALLBACK callback_;
     void           *ctx_;
-
+    sample_buf   silentBuf_;
 #ifdef  ENABLE_LOG
     AndroidLog  *logFile_;
 #endif
+    std::mutex       stopMutex_;
 public:
     explicit AudioPlayer(SampleFormat *sampleFormat, SLEngineItf engine);
     ~AudioPlayer();
@@ -48,7 +48,6 @@ public:
     void        Stop(void);
     void        ProcessSLCallback(SLAndroidSimpleBufferQueueItf bq);
     uint32_t    dbgGetDevBufCount(void);
-    void        PlayAudioBuffers(int32_t count);
     void        RegisterCallback(ENGINE_CALLBACK cb, void *ctx);
 };
 

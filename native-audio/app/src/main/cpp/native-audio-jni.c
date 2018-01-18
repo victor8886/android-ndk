@@ -21,6 +21,7 @@
  *   src/com/example/nativeaudio/NativeAudio/NativeAudio.java
  */
 
+#include <stdlib.h>
 #include <assert.h>
 #include <jni.h>
 #include <string.h>
@@ -684,6 +685,8 @@ jboolean Java_com_example_nativeaudio_NativeAudio_selectClip(JNIEnv* env, jclass
             pthread_mutex_unlock(&audioEngineLock);
             return JNI_FALSE;
         }
+    } else {
+        pthread_mutex_unlock(&audioEngineLock);
     }
 
     return JNI_TRUE;
